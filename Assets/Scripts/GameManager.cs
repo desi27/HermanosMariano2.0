@@ -476,8 +476,8 @@ public class GameManager : MonoBehaviour
             float X = player.transform.position.x;
             float Y = player.transform.position.y;
 
-            int n = Mathf.Abs( Mathf.CeilToInt(X) / 3) * 10000 + Mathf.Abs(Mathf.CeilToInt(Y) / 3);
-            if(Y < 0)
+            int n = Mathf.Abs(Mathf.CeilToInt(X) / 3) * 10000 + Mathf.Abs(Mathf.CeilToInt(Y) / 3);
+            if (Y < 0)
             {
                 n = n + 1000;
             }
@@ -580,8 +580,8 @@ public class GameManager : MonoBehaviour
 
     public void CompletarCutscene(string tipo, int total, int ultimo)
     {
-        if(ultimo == total-1)
-        {        
+        if (ultimo == total - 1)
+        {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
                 {"Zona", GetZone(levelIndex) },
@@ -590,14 +590,14 @@ public class GameManager : MonoBehaviour
                 {"DialogosTotales", total - 1},
                 //{"UltimoDialogo", ultimo }
             };
-        
+
             analyticsTrace(dictionary, "CompletarCutscene");
             Analytics.CustomEvent("CompletarCutscene", dictionary);
         }
     }
 
     public void SaltearCutscene(string tipo, int total, int ultimo)
-    {      
+    {
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
             {"Zona", GetZone(levelIndex) },
@@ -609,11 +609,11 @@ public class GameManager : MonoBehaviour
 
         analyticsTrace(dictionary, "SaltearCutscene");
         Analytics.CustomEvent("SaltearCutscene", dictionary);
-        
+
     }
 
     public void ReiniciarNivelGameOver()
-    {        
+    {
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
             {"Zona", GetZone(levelIndex) },
@@ -695,12 +695,12 @@ public class GameManager : MonoBehaviour
             {"EjeX", Mathf.FloorToInt( EjeX ) },
             {"EjeY", Mathf.FloorToInt( EjeY ) },
             {"PuntoDeMuerte", n },
-            {"ObjetoQueLoMato", culpable + "Z" + GetZone(levelIndex) + "N" + instance.levelNumber},
+            {"ObjetoQueLoMato", culpable },
             {"TipoDeObjetoQueLoMato", ConvertToType(culpable) }
         };
 
         analyticsTrace(dictionary, "MatarEnemigo" + "Z" + dictionary["Zona"] + "N" + dictionary["Nivel"]);
-        Analytics.CustomEvent("MatarEnemigo", dictionary);
+        Analytics.CustomEvent("MatarEnemigo" + "Z" + dictionary["Zona"] + "N" + dictionary["Nivel"], dictionary);
     }
 
     //Inputs del Mapa
@@ -721,7 +721,7 @@ public class GameManager : MonoBehaviour
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
             {"Zona", GetZone(level) },
-            {"Nivel", level }            
+            {"Nivel", level }
         };
 
         //analyticsTrace(dictionary, "MapaClicNivel");
@@ -742,15 +742,15 @@ public class GameManager : MonoBehaviour
     public void MapaCompletarCutscene(int total, string levelName, int zone)
     {
         string zonePath = "";
-        if(zone == 1)
+        if (zone == 1)
         {
             zonePath = "Zona 1 - Oficina/";
         }
-        else if(zone == 2)
+        else if (zone == 2)
         {
             zonePath = "Zona 2 - Ciudad/";
         }
-        else if(zone == 3)
+        else if (zone == 3)
         {
             zonePath = "Zona 3 - Prision/";
         }
@@ -759,8 +759,8 @@ public class GameManager : MonoBehaviour
             zonePath = "Zona 4 - Ciudad Inundada/";
         }
 
-        int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + zonePath + levelName + ".unity");   
-        
+        int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + zonePath + levelName + ".unity");
+
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
             {"Zona", GetZone(index) },
@@ -768,9 +768,9 @@ public class GameManager : MonoBehaviour
             {"DialogosTotales", total - 1},
             //{"UltimoDialogo", ultimo }
         };
-        
+
         analyticsTrace(dictionary, "MapaCompletarCutscene");
-        Analytics.CustomEvent("MapaCompletarCutscene", dictionary);        
+        Analytics.CustomEvent("MapaCompletarCutscene", dictionary);
     }
 
     public void MapaSaltearCutscene(int total, int ultimo, string levelName, int zone)
@@ -804,7 +804,7 @@ public class GameManager : MonoBehaviour
         };
 
         analyticsTrace(dictionary, "MapaSaltearCutscene");
-        Analytics.CustomEvent("MapaSaltearCutscene", dictionary);        
+        Analytics.CustomEvent("MapaSaltearCutscene", dictionary);
     }
 
     public void Calificar(int stars)
